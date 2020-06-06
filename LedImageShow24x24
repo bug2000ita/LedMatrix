@@ -1,0 +1,88 @@
+# Simple test for NeoPixels on Raspberry Pi
+import time
+import board
+import neopixel
+from PIL import Image
+
+
+# Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
+# NeoPixels must be connected to D10, D12, D18 or D21 to work.
+pixel_pin = board.D18
+
+# The number of NeoPixels
+num_pixels = 640
+
+# The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
+# For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
+ORDER = neopixel.GRB
+
+pixels = neopixel.NeoPixel(
+    pixel_pin, num_pixels, brightness=0.01, auto_write=False, pixel_order=ORDER
+)
+
+
+def light(x,y):
+    if x<8:
+        if y<8:
+            return (64*3)-1-(x*8)-y
+        if y<16:
+            return (64*3)+56+x-(y-8)*8
+        if y<24:
+            return (64*9)-1-(8*x)-(y-16)
+    if x<16:
+        if y<8:
+            return (64+8*(y+2))-1-x
+        if y<16:
+            return (64*4)+63-(8*((x-16)%8))-(y-8)
+        if y<24:
+            return (64*7)+56+(x-8)-(y-16)*8
+    if x<24:
+        if y<8:
+            return 64-((x-16)*8)-(y+1)
+        if y<16:
+            return (64*5)+56+(x-16)-(y-8)*8
+        if y<24:
+            return (64*7)-1-8*(x-16)-(y-16)
+        
+ 
+    return (64*9)-1
+
+def ShowImage(imageFileName):
+    img=Image.open(imageFileName)
+    x=0
+    y=0
+    pixels.fill((0, 0, 0))
+    pixels.show()
+    img=Image.open(imageFileName)
+    img=img.rotate(90)
+    rgb_im=img.convert('RGB')
+    pixels.fill((0,0,0))
+    while True:
+        r, g, b = rgb_im.getpixel((x,y))
+        pixels[light(x,y)]=(r,g,b)
+        x=x+1
+
+        if x%24==0:
+            x=0
+            y=y+1
+        
+        if y%24==0 and y!=0:
+            x=0
+            y=0
+            break
+
+        print(img.getpixel((x,y)))    
+        print("counting ",x,y," -> ",light(x,y))
+
+    pixels.show()
+
+
+while (True):    
+    ShowImage('Smile.png')
+    time.sleep(1)
+    ShowImage('Heart.png')
+    time.sleep(1)
+    ShowImage('Funny.bmp')
+    time.sleep(1)
+    ShowImage('Music.png')
+    time.sleep(1)
