@@ -2,7 +2,11 @@
 import time
 import board
 import neopixel
+from datetime import datetime
+from decimal import Decimal
 from PIL import Image
+from PIL import ImageOps
+import requests, json
 
 
 # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
@@ -17,10 +21,217 @@ num_pixels = 640
 ORDER = neopixel.GRB
 
 pixels = neopixel.NeoPixel(
-    pixel_pin, num_pixels, brightness=0.01, auto_write=False, pixel_order=ORDER
+    pixel_pin, num_pixels, brightness=0.03, auto_write=False, pixel_order=ORDER
 )
 
+off = (0,0,0)
 
+
+    
+def showZero(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    #111
+    #101
+    #101
+    #101
+    #111
+    pixels[light(0+offsetX,0+offsetY)]=on
+    pixels[light(1+offsetX,0+offsetY)]=on
+    pixels[light(2+offsetX,0+offsetY)]=on
+    pixels[light(0+offsetX,1+offsetY)]=on
+    pixels[light(1+offsetX,1+offsetY)]=off
+    pixels[light(2+offsetX,1+offsetY)]=on
+    pixels[light(0+offsetX,2+offsetY)]=on
+    pixels[light(1+offsetX,2+offsetY)]=off
+    pixels[light(2+offsetX,2+offsetY)]=on
+    pixels[light(0+offsetX,3+offsetY)]=on
+    pixels[light(1+offsetX,3+offsetY)]=off
+    pixels[light(2+offsetX,3+offsetY)]=on
+    pixels[light(0+offsetX,4+offsetY)]=on
+    pixels[light(1+offsetX,4+offsetY)]=on
+    pixels[light(2+offsetX,4+offsetY)]=on
+    pixels.show()
+
+def showOne(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=off
+    pixels[light(1+offsetX,0+offsetY)]=on
+    pixels[light(2+offsetX,0+offsetY)]=off
+    pixels[light(0+offsetX,1+offsetY)]=off
+    pixels[light(1+offsetX,1+offsetY)]=on
+    pixels[light(2+offsetX,1+offsetY)]=off
+    pixels[light(0+offsetX,2+offsetY)]=off
+    pixels[light(1+offsetX,2+offsetY)]=on
+    pixels[light(2+offsetX,2+offsetY)]=off
+    pixels[light(0+offsetX,3+offsetY)]=off
+    pixels[light(1+offsetX,3+offsetY)]=on
+    pixels[light(2+offsetX,3+offsetY)]=off
+    pixels[light(0+offsetX,4+offsetY)]=off
+    pixels[light(1+offsetX,4+offsetY)]=on
+    pixels[light(2+offsetX,4+offsetY)]=off
+    pixels.show()
+
+def showTwo(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=on
+    pixels[light(1+offsetX,0+offsetY)]=on
+    pixels[light(2+offsetX,0+offsetY)]=on
+    pixels[light(0+offsetX,1+offsetY)]=on
+    pixels[light(1+offsetX,1+offsetY)]=off
+    pixels[light(2+offsetX,1+offsetY)]=off
+    pixels[light(0+offsetX,2+offsetY)]=on
+    pixels[light(1+offsetX,2+offsetY)]=on
+    pixels[light(2+offsetX,2+offsetY)]=on
+    pixels[light(0+offsetX,3+offsetY)]=off
+    pixels[light(1+offsetX,3+offsetY)]=off
+    pixels[light(2+offsetX,3+offsetY)]=on
+    pixels[light(0+offsetX,4+offsetY)]=on
+    pixels[light(1+offsetX,4+offsetY)]=on
+    pixels[light(2+offsetX,4+offsetY)]=on
+    pixels.show()
+
+def showThree(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=on
+    pixels[light(1+offsetX,0+offsetY)]=on
+    pixels[light(2+offsetX,0+offsetY)]=on
+    pixels[light(0+offsetX,1+offsetY)]=off
+    pixels[light(1+offsetX,1+offsetY)]=off
+    pixels[light(2+offsetX,1+offsetY)]=on
+    pixels[light(0+offsetX,2+offsetY)]=on
+    pixels[light(1+offsetX,2+offsetY)]=on
+    pixels[light(2+offsetX,2+offsetY)]=on
+    pixels[light(0+offsetX,3+offsetY)]=off
+    pixels[light(1+offsetX,3+offsetY)]=off
+    pixels[light(2+offsetX,3+offsetY)]=on
+    pixels[light(0+offsetX,4+offsetY)]=on
+    pixels[light(1+offsetX,4+offsetY)]=on
+    pixels[light(2+offsetX,4+offsetY)]=on
+    pixels.show()
+
+def showFour(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=off
+    pixels[light(1+offsetX,0+offsetY)]=off
+    pixels[light(2+offsetX,0+offsetY)]=on
+    pixels[light(0+offsetX,1+offsetY)]=off
+    pixels[light(1+offsetX,1+offsetY)]=off
+    pixels[light(2+offsetX,1+offsetY)]=on
+    pixels[light(0+offsetX,2+offsetY)]=on
+    pixels[light(1+offsetX,2+offsetY)]=on
+    pixels[light(2+offsetX,2+offsetY)]=on
+    pixels[light(0+offsetX,3+offsetY)]=on
+    pixels[light(1+offsetX,3+offsetY)]=off
+    pixels[light(2+offsetX,3+offsetY)]=on
+    pixels[light(0+offsetX,4+offsetY)]=on
+    pixels[light(1+offsetX,4+offsetY)]=off
+    pixels[light(2+offsetX,4+offsetY)]=on
+    pixels.show()
+
+def showFive(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=on
+    pixels[light(1+offsetX,0+offsetY)]=on
+    pixels[light(2+offsetX,0+offsetY)]=on
+    pixels[light(0+offsetX,1+offsetY)]=off
+    pixels[light(1+offsetX,1+offsetY)]=off
+    pixels[light(2+offsetX,1+offsetY)]=on
+    pixels[light(0+offsetX,2+offsetY)]=on
+    pixels[light(1+offsetX,2+offsetY)]=on
+    pixels[light(2+offsetX,2+offsetY)]=on
+    pixels[light(0+offsetX,3+offsetY)]=on
+    pixels[light(1+offsetX,3+offsetY)]=off
+    pixels[light(2+offsetX,3+offsetY)]=off
+    pixels[light(0+offsetX,4+offsetY)]=on
+    pixels[light(1+offsetX,4+offsetY)]=on
+    pixels[light(2+offsetX,4+offsetY)]=on
+    pixels.show()
+    
+def showSix(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=on
+    pixels[light(1+offsetX,0+offsetY)]=on
+    pixels[light(2+offsetX,0+offsetY)]=on
+    pixels[light(0+offsetX,1+offsetY)]=on
+    pixels[light(1+offsetX,1+offsetY)]=off
+    pixels[light(2+offsetX,1+offsetY)]=on
+    pixels[light(0+offsetX,2+offsetY)]=on
+    pixels[light(1+offsetX,2+offsetY)]=on
+    pixels[light(2+offsetX,2+offsetY)]=on
+    pixels[light(0+offsetX,3+offsetY)]=on
+    pixels[light(1+offsetX,3+offsetY)]=off
+    pixels[light(2+offsetX,3+offsetY)]=off
+    pixels[light(0+offsetX,4+offsetY)]=on
+    pixels[light(1+offsetX,4+offsetY)]=off
+    pixels[light(2+offsetX,4+offsetY)]=off
+    pixels.show()
+
+def showSeven(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=off
+    pixels[light(1+offsetX,0+offsetY)]=off
+    pixels[light(2+offsetX,0+offsetY)]=on
+    pixels[light(0+offsetX,1+offsetY)]=off
+    pixels[light(1+offsetX,1+offsetY)]=off
+    pixels[light(2+offsetX,1+offsetY)]=on
+    pixels[light(0+offsetX,2+offsetY)]=off
+    pixels[light(1+offsetX,2+offsetY)]=off
+    pixels[light(2+offsetX,2+offsetY)]=on
+    pixels[light(0+offsetX,3+offsetY)]=off
+    pixels[light(1+offsetX,3+offsetY)]=off
+    pixels[light(2+offsetX,3+offsetY)]=on
+    pixels[light(0+offsetX,4+offsetY)]=on
+    pixels[light(1+offsetX,4+offsetY)]=on
+    pixels[light(2+offsetX,4+offsetY)]=on
+    pixels.show()
+
+def showEight(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=on
+    pixels[light(1+offsetX,0+offsetY)]=on
+    pixels[light(2+offsetX,0+offsetY)]=on
+    pixels[light(0+offsetX,1+offsetY)]=on
+    pixels[light(1+offsetX,1+offsetY)]=off
+    pixels[light(2+offsetX,1+offsetY)]=on
+    pixels[light(0+offsetX,2+offsetY)]=on
+    pixels[light(1+offsetX,2+offsetY)]=on
+    pixels[light(2+offsetX,2+offsetY)]=on
+    pixels[light(0+offsetX,3+offsetY)]=on
+    pixels[light(1+offsetX,3+offsetY)]=off
+    pixels[light(2+offsetX,3+offsetY)]=on
+    pixels[light(0+offsetX,4+offsetY)]=on
+    pixels[light(1+offsetX,4+offsetY)]=on
+    pixels[light(2+offsetX,4+offsetY)]=on
+    pixels.show()
+
+def showNine(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=off
+    pixels[light(1+offsetX,0+offsetY)]=off
+    pixels[light(2+offsetX,0+offsetY)]=on
+    pixels[light(0+offsetX,1+offsetY)]=off
+    pixels[light(1+offsetX,1+offsetY)]=off
+    pixels[light(2+offsetX,1+offsetY)]=on
+    pixels[light(0+offsetX,2+offsetY)]=on
+    pixels[light(1+offsetX,2+offsetY)]=on
+    pixels[light(2+offsetX,2+offsetY)]=on
+    pixels[light(0+offsetX,3+offsetY)]=on
+    pixels[light(1+offsetX,3+offsetY)]=off
+    pixels[light(2+offsetX,3+offsetY)]=on
+    pixels[light(0+offsetX,4+offsetY)]=on
+    pixels[light(1+offsetX,4+offsetY)]=on
+    pixels[light(2+offsetX,4+offsetY)]=on
+    pixels.show()
+
+def showSemiColon(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=off
+    pixels[light(0+offsetX,1+offsetY)]=on
+    pixels[light(0+offsetX,2+offsetY)]=off
+    pixels[light(0+offsetX,3+offsetY)]=on
+    pixels[light(0+offsetX,4+offsetY)]=off
+    pixels.show()
+    
 def light(x,y):
     if x<8:
         if y<8:
@@ -47,42 +258,245 @@ def light(x,y):
  
     return (64*9)-1
 
-def ShowImage(imageFileName):
+
+def showSnake(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=on
+    pixels[light(1+offsetX,0+offsetY)]=on
+    pixels[light(2+offsetX,0+offsetY)]=on
+    pixels[light(3+offsetX,0+offsetY)]=on    
+
+    pixels.show()    
+
+def ShowImage(imageFileName,cropRight,cropUp):
     img=Image.open(imageFileName)
     x=0
     y=0
-    pixels.fill((0, 0, 0))
-    pixels.show()
     img=Image.open(imageFileName)
-    img=img.rotate(90)
+    img=img.rotate(180)
+
+    #img=ImageOps.crop(img,(0,top,right,0)
+    #img.save("testimage.png")
     rgb_im=img.convert('RGB')
-    pixels.fill((0,0,0))
+ 
     while True:
+        
         r, g, b = rgb_im.getpixel((x,y))
         pixels[light(x,y)]=(r,g,b)
         x=x+1
 
-        if x%24==0:
+        if x%cropRight==0:
             x=0
             y=y+1
         
-        if y%24==0 and y!=0:
+        if y%cropUp==0 and y!=0:
             x=0
             y=0
             break
 
-        print(img.getpixel((x,y)))    
-        print("counting ",x,y," -> ",light(x,y))
+ 
+        #print("counting ",x,y," -> ",light(x,y))
 
     pixels.show()
 
+def testAllNumbers():
+    wait=0.09
+    for y in range (0,20):
+        for x in range (0,22):
+            showSemiColon(x,y,0,200,0)
+            time.sleep(wait+0.5)
+            pixels.fill((0, 0, 0))
+            showZero(x,y,255,0,0)
+            time.sleep(wait)
+            pixels.fill((0, 0, 0))
+            showOne(x,y,0,0,255)
+            time.sleep(wait)
+            pixels.fill((0, 0, 0))
+            showTwo(x,y,0,255,0)
+            time.sleep(wait)
+            pixels.fill((0, 0, 0))
+            showThree(x,y,255,255,0)
+            time.sleep(wait)
+            pixels.fill((0, 0, 0))
+            showFour(x,y,255,0,255)
+            time.sleep(wait)
+            pixels.fill((0, 0, 0))
+            showFive(x,y,255,0,0)
+            time.sleep(wait)
+            pixels.fill((0, 0, 0))
+            showSix(x,y,0,255,0)
+            time.sleep(wait)
+            pixels.fill((0, 0, 0))            
+            showSeven(x,y,0,0,255)
+            time.sleep(wait)
+            pixels.fill((0, 0, 0))
+            showEight(x,y,255,0,0)
+            time.sleep(wait)
+            pixels.fill((0, 0, 0))
+            showNine(x,y,0,0,255)
+            time.sleep(wait)
+            pixels.fill((0, 0, 0))
 
-while (True):    
-    ShowImage('Smile.png')
-    time.sleep(1)
-    ShowImage('Heart.png')
-    time.sleep(1)
-    ShowImage('Funny.bmp')
-    time.sleep(1)
-    ShowImage('Music.png')
-    time.sleep(1)
+def DisplayOneOrTwoDigit(offsetHMS,value,xOffset,yOffset,r,g,b,isLessSignificativeDigit):
+    #offsetHMS 0H - 7M - 14S
+
+    #define offset for the second digit of the same number: init zero number < 10
+    positionDigitOffset = 0
+    widthDigit = 3
+    #how many empty line between 2 digit of the same number
+    emptyLine = 1 
+
+
+    if isLessSignificativeDigit==False:
+        positionDigitOffset= widthDigit + emptyLine  
+
+    OffsetGlobalX = xOffset+emptyLine+offsetHMS+positionDigitOffset
+    OffsetGlobalY = yOffset
+    
+    if value==0:
+        showZero(OffsetGlobalX,OffsetGlobalY,r,g,b)
+    if value==1:
+        showOne(OffsetGlobalX,OffsetGlobalY,r,g,b)
+    if value==2:
+        showTwo(OffsetGlobalX,OffsetGlobalY,r,g,b)
+    if value==3:
+        showThree(OffsetGlobalX,OffsetGlobalY,r,g,b)
+    if value==4:
+        showFour(OffsetGlobalX,OffsetGlobalY,r,g,b)
+    if value==5:
+        showFive(OffsetGlobalX,OffsetGlobalY,r,g,b)
+    if value==6:
+        showSix(OffsetGlobalX,OffsetGlobalY,r,g,b)
+    if value==7:
+        showSeven(OffsetGlobalX,OffsetGlobalY,r,g,b)
+    if value==8:
+        showEight(OffsetGlobalX,OffsetGlobalY,r,g,b)
+    if value==9:
+        showNine(OffsetGlobalX,OffsetGlobalY,r,g,b)
+
+
+def timeComposition(offsetHMS,value,xOffset,yOffset,r,g,b):
+
+    valueStr = "%02d" % value
+
+    DisplayOneOrTwoDigit(offsetHMS,Decimal(valueStr[0]),xOffset,yOffset,r,g,b,True)
+    DisplayOneOrTwoDigit(offsetHMS,Decimal(valueStr[1]),xOffset,yOffset,r,g,b,False)
+
+
+def ShowTime(xOffset,yOffset,h,m,s):
+    timeComposition(0,h,xOffset,yOffset,255,0,0)
+    #+1 spazio in piu tra i digit
+    timeComposition(7+1,m,xOffset,yOffset,255,0,0)
+    #+2 spazio in piu tra i digit
+    timeComposition(14+2,s,xOffset,yOffset,255,0,0)
+    showSemiColon(xOffset+6+2,yOffset,255,255,255)
+    showSemiColon(xOffset+13+3,yOffset,255,255,255)
+
+def ShowBlock(offsetX,offsetY,r,g,b):
+    on =  (r,g,b)
+    pixels[light(0+offsetX,0+offsetY)]=on
+    pixels[light(1+offsetX,0+offsetY)]=on
+    pixels[light(0+offsetX,1+offsetY)]=on
+    pixels[light(1+offsetX,1+offsetY)]=on
+    pixels.show()
+
+def ResetLine(offsetY):
+    for x in range(0,23):
+        pixels[light(x,offsetY)]=off
+        pixels[light(x,1+offsetY)]=off
+        pixels[light(x,2+offsetY)]=off
+
+def Weather():
+    api_key="576ce0aac6ae57581b535bcd77c4c324"
+    base_url = "http://api.openweathermap.org/data/2.5/weather?"
+    city_name = "Eindhoven"
+    complete_url = base_url + "appid=" + api_key + "&q=" + city_name 
+    response = requests.get(complete_url)
+    x = response.json()
+    if x["cod"] != "404":
+        y = x["main"]
+        current_temperature = round(y["temp"]-273.15)
+        current_pressure = y["pressure"]
+        current_humidiy = y["humidity"]
+        z = x["weather"]
+        idWeather = z[0]["id"]
+        weather_description = z[0]["description"]
+        print(" Temperature (in celsius unit) = " +
+                    str(current_temperature) + 
+          "\n atmospheric pressure (in hPa unit) = " +
+                    str(current_pressure) +
+          "\n humidity (in percentage) = " +
+                    str(current_humidiy) +
+          "\n description = " +
+                    str(weather_description)+
+          "\n id =" + str(idWeather))
+        return ((int(idWeather),current_temperature)) 
+    else: 
+        print(" City Not Found ")
+        return 0
+    
+positionBlockX=0;
+positionBlockY=0;
+
+positionBlockNegativeY=22
+xSnake=0
+ySnake=0
+pixels.fill((0, 0, 0))
+switchImage=0
+counterMeteo = 0
+((valueMeteo,temperature)) = Weather()
+while (True):
+
+    if counterMeteo == 30:
+        (valueMeteo, temperature) = Weather()
+        counterMeteo=0
+        
+    counterMeteo=counterMeteo+1
+    #pixels.fill((0, 0, 0))
+    
+    now = datetime.now()
+    h=Decimal(now.strftime("%H"))+1
+    m=Decimal(now.strftime("%M"))
+    s=Decimal(now.strftime("%S"))
+    ShowTime(0,17,h,m,s)
+
+    #temperature
+    timeComposition(0,temperature,16,8,0,200,200)
+
+#Sleep till next second starts
+    time.sleep((1000000-datetime.now().microsecond)/1000000)
+
+    if valueMeteo==800:
+        ShowImage('/home/pi/ClockLed/sun1.png',17,16)      
+        time.sleep(0.4)
+        ShowImage('/home/pi/ClockLed/sun2.png',17,16)    
+
+    #if(switchImage==1):
+    #if "clouds" in meteo:
+    if valueMeteo<=804 and valueMeteo>=801:
+        ShowImage('/home/pi/ClockLed/cloud1.png',17,16)
+        time.sleep(0.4)
+        ShowImage('/home/pi/ClockLed/cloud2.png',17,16)
+
+    if valueMeteo<=531 and valueMeteo>=200:
+        ShowImage('/home/pi/ClockLed/lightning1.png',17,16)
+        time.sleep(0.4)
+        ShowImage('/home/pi/ClockLed/lightning2.png',17,16)
+
+    switchImage=switchImage+1
+
+
+
+    #if(switchImage==3):
+    #    switchImage=0
+    
+
+    #ShowImage('Heart.png')
+    #time.sleep(1)
+    #pixels.fill((0,0,0))
+    #ShowImage('Funny.bmp')
+    #time.sleep(1)
+    #pixels.fill((0,0,0))
+    #ShowImage('Music.png')
+    #time.sleep(1)
+    
